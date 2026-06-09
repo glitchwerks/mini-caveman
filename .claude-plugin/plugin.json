@@ -1,0 +1,12 @@
+{
+  "name": "mini-caveman",
+  "version": "1.0.0",
+  "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
+  "author": {
+    "name": "Julius Brussee",
+    "url": "https://github.com/JuliusBrussee"
+  },
+  "license": "MIT",
+  "keywords": ["claude-code", "tokens", "compression", "productivity"],
+  "hooks": "./hooks/hooks.json"
+}

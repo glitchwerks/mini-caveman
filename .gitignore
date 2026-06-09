@@ -1,0 +1,10 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Node (no deps shipped, but guard against accidental installs)
+node_modules/
+
+# Scratch / local
+.tmp/
+*.log
