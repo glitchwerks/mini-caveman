@@ -32,6 +32,26 @@ Locate → fix → verify (most common):
 
 Parallel scout: spawn 2-3 `cavecrew-investigator` calls in one message with different angles (defs, callers, tests). Aggregate in main.
 
+## Model overrides
+
+Current defaults:
+
+- `cavecrew-reviewer` (`agents/cavecrew-reviewer.md`): `haiku`
+- `cavecrew-builder` (`agents/cavecrew-builder.md`): no model override
+- `cavecrew-investigator` (`agents/cavecrew-investigator.md`): `haiku`
+
+Plugin installs can override each agent model with an environment variable:
+
+- `CAVECREW_REVIEWER_MODEL` → `cavecrew-reviewer`
+- `CAVECREW_BUILDER_MODEL` → `cavecrew-builder`
+- `CAVECREW_INVESTIGATOR_MODEL` → `cavecrew-investigator`
+
+Example: `export CAVECREW_REVIEWER_MODEL=sonnet`
+
+Unset or blank means no change; the existing/default model is used. This patches only the agent file's `model:` frontmatter line. Prompt body stays untouched and keeps receiving upstream updates.
+
+Plugin installs only: files under the plugin's own `agents/` directory are resolved relative to `hooks/`.
+
 ## See also
 
 - [`SKILL.md`](./SKILL.md) — full decision matrix and output contracts
