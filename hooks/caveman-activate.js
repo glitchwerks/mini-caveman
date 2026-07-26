@@ -13,6 +13,11 @@ const { getDefaultMode, safeWriteFlag } = require('./caveman-config');
 const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
 const flagPath = path.join(claudeDir, '.caveman-active');
 
+try {
+  const { applyOverrides, resolvePluginRoot } = require('./cavecrew-model-overrides');
+  applyOverrides(resolvePluginRoot(__dirname));
+} catch (e) {}
+
 const mode = getDefaultMode();
 
 // "off" mode — skip activation entirely, don't write flag or emit rules
