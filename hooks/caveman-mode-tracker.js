@@ -12,10 +12,18 @@ const flagPath = path.join(claudeDir, '.caveman-active');
 
 let input = '';
 process.stdin.on('data', chunk => { input += chunk; });
+process.stdin.on('error', () => { process.exit(0); });
 process.stdin.on('end', () => {
   try {
     const data = JSON.parse(input);
-    const prompt = (data.prompt || '').trim().toLowerCase();
+    let prompt = (data.prompt || '').trim().toLowerCase();
+
+    const commandEnvelope = prompt.match(
+      /^<command-message>\s*caveman\s*<\/command-message>\s*<command-name>\s*(\/caveman(?::caveman)?)\s*<\/command-name>\s*<command-args>\s*([^<]*?)\s*<\/command-args>$/
+    );
+    if (commandEnvelope) {
+      prompt = `${commandEnvelope[1]} ${commandEnvelope[2]}`.trim();
+    }
 
     // Natural language activation (e.g. "activate caveman", "turn on caveman mode",
     // "talk like caveman"). README tells users they can say these, but the hook

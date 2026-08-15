@@ -1,7 +1,7 @@
 {
   "name": "mini-caveman",
   "version": "1.1.0",
-  "description": "Ultra-compressed communication mode. Cuts ~75% of tokens while keeping full technical accuracy by speaking like a caveman.",
+  "description": "Ultra-compressed communication mode. Cuts 65% of tokens (measured) while keeping full technical accuracy by speaking like a caveman.",
   "author": {
     "name": "Julius Brussee",
     "url": "https://github.com/JuliusBrussee"
