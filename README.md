@@ -10,7 +10,7 @@ Security-audited for work-machine use. See [`docs/security-audit.md`](docs/secur
 
 Activates "caveman mode" on every session start. Claude replies with terse, technically accurate output — dropping articles, filler, pleasantries, and hedging — while keeping code blocks, error strings, paths, and commands exactly as-is.
 
-Typical output token reduction: **65–75%**. Technical accuracy: unchanged. Code/commits/PRs are always written in normal prose.
+Typical output token reduction: **65% (measured)**. Technical accuracy: unchanged. Code/commits/PRs are always written in normal prose.
 
 Safety valve: Claude automatically drops caveman for security warnings, irreversible-action confirmations, and any step where fragment order could be misread.
 
