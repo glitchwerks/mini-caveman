@@ -23,7 +23,7 @@ Safety valve: Claude automatically drops caveman for security warnings, irrevers
 | `/caveman` | Activate full mode (default) |
 | `/caveman lite` | Drop filler; keep sentence structure and articles |
 | `/caveman full` | Drop articles, filler, pleasantries, hedging; fragments OK |
-| `/caveman ultra` | Maximum compression; abbreviate prose words; arrows for causality |
+| `/caveman ultra` | Maximum compression; standard acronyms only, no invented abbreviations, no causal arrows |
 | `/caveman wenyan-lite` | Classical Chinese register, light compression |
 | `/caveman wenyan` | Full 文言文; 80–90% character reduction |
 | `/caveman wenyan-ultra` | Extreme classical compression |
