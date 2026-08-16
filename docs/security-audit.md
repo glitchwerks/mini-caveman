@@ -1,7 +1,7 @@
 # Security Audit Report: caveman Plugin
 
 **Date:** 2026-06-09  
-**Scope:** Plugin root `/i/ai/claude/mini-cavemen/mini-caveman/`  
+**Scope:** Plugin root `/i/ai/claude/mini-caveman/`  
 **Auditor:** Claude Code Security Review  
 **Verdict:** APPROVED FOR SHIPPING (no critical or high blockers)
 

@@ -10,7 +10,7 @@ Security-audited for work-machine use. See [`docs/security-audit.md`](docs/secur
 
 Activates "caveman mode" on every session start. Claude replies with terse, technically accurate output — dropping articles, filler, pleasantries, and hedging — while keeping code blocks, error strings, paths, and commands exactly as-is.
 
-Typical output token reduction: **65% (measured)**. Technical accuracy: unchanged. Code/commits/PRs are always written in normal prose.
+Typical output token reduction: **65% (measured)**. Technical accuracy: unchanged. Anything persisted outside chat — code, comments, commits, docs, issue/PR text, memory files, third-party messages — is always written in normal prose (`/caveman-compress` exempt).
 
 Safety valve: Claude automatically drops caveman for security warnings, irreversible-action confirmations, and any step where fragment order could be misread.
 
@@ -96,13 +96,13 @@ None beyond what Claude Code already ships.
 
 **Option 1 — local marketplace (recommended):**
 ```
-/plugin marketplace add /i/ai/claude/mini-cavemen/mini-caveman
+/plugin marketplace add /i/ai/claude/mini-caveman
 /plugin install mini-caveman
 ```
 
 **Option 2 — plugin dir flag at launch:**
 ```bash
-claude --plugin-dir /i/ai/claude/mini-cavemen/mini-caveman
+claude --plugin-dir /i/ai/claude/mini-caveman
 ```
 
 After install, start a new session and say "talk like caveman" or run `/caveman`. Stop with "normal mode".
@@ -113,11 +113,13 @@ After install, start a new session and say "talk like caveman" or run `/caveman`
 
 ```
 .claude-plugin/          Plugin manifest (plugin.json, marketplace.json)
-hooks/                   Two Claude Code hooks + shared config module
+hooks/                   Two Claude Code hooks + shared modules
   hooks.json             Hook wiring (SessionStart + UserPromptSubmit)
   caveman-activate.js    SessionStart — injects caveman mode on session open
   caveman-mode-tracker.js  UserPromptSubmit — tracks mode changes per turn
   caveman-config.js      Shared config resolver (env var, config file, default)
+  cavecrew-model-overrides.js  Per-agent model overrides via CAVECREW_*_MODEL env vars, applied on SessionStart
+  package.json           Marks hooks/ as CommonJS
 skills/
   caveman/               Core mode skill
   caveman-help/          One-shot reference card
