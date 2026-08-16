@@ -60,6 +60,30 @@ Use `/cavecrew` (the skill) to decide when delegation makes sense vs. working in
 
 ---
 
+## Cavecrew model overrides
+
+Pin an individual cavecrew subagent to a specific model, independent of the session's default model. Applied on every session start by the same hook that activates caveman mode — it patches the `model:` frontmatter field of the matching agent file in `agents/` before that agent can be invoked.
+
+**Environment variables:**
+
+| Env var | Overrides |
+|---|---|
+| `CAVECREW_REVIEWER_MODEL` | `cavecrew-reviewer` |
+| `CAVECREW_BUILDER_MODEL` | `cavecrew-builder` |
+| `CAVECREW_INVESTIGATOR_MODEL` | `cavecrew-investigator` |
+
+Set to any model value Claude Code accepts in agent frontmatter (e.g. `haiku`). `cavecrew-reviewer` and `cavecrew-investigator` ship pinned to `haiku`; `cavecrew-builder` has no `model:` line and inherits the session's default model — so it's the one an override actually changes. Example, pin the builder subagent to Haiku:
+
+```bash
+export CAVECREW_BUILDER_MODEL=haiku
+```
+
+- The value is trimmed and written into the target agent file's `model:` frontmatter on disk (`agents/cavecrew-<name>.md`) — this **persists** across sessions, even after the env var is unset
+- To revert, set the env var back to the original value, or restore the file (e.g. `git checkout agents/cavecrew-builder.md`)
+- Unset, empty, or whitespace-only values cause no write on that run — but they don't undo a previous override
+
+---
+
 ## Default mode configuration
 
 Default is `full`. Override via environment variable or config file.
