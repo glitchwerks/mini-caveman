@@ -187,3 +187,59 @@ test('slash-command envelope (newline-separated): /caveman off deactivates and r
     'expected the caveman flag file to be removed by the envelope-wrapped /caveman off command'
   );
 });
+
+// ---------- issue #16: stale Boundaries text in per-turn reinforcement ----------
+//
+// skills/caveman/SKILL.md's `## Boundaries` section (source of truth) reads:
+//   "Persisted outside chat: write normal prose — code, comments, commits,
+//   docs, issue/PR text, memory files, third-party messages
+//   (`/caveman-compress` exempt)."
+// (broadened in PR #10, https://github.com/glitchwerks/mini-caveman/pull/10)
+//
+// The per-turn reinforcement string this hook injects on every turn while
+// caveman mode is active duplicates its own copy of that rule instead of
+// reading SKILL.md, and that copy still reflects the pre-PR#10 narrow scope
+// ("Code/commits/security: write normal."). It is missing comments, docs,
+// issue/PR text, memory files, and third-party messages. These tests assert
+// the CORRECT (broadened) scope and are expected to fail against current
+// code, which emits the stale, narrower text.
+//
+// A prompt with no caveman-related words is used so the activation/
+// deactivation regexes in this hook are no-ops and only the pre-seeded flag
+// file determines whether reinforcement fires.
+const NON_CAVEMAN_PROMPT = 'What is the weather forecast for New Orleans tomorrow?';
+
+function extractAdditionalContext(stdout) {
+  const parsed = JSON.parse(stdout);
+  return parsed.hookSpecificOutput.additionalContext;
+}
+
+test('per-turn reinforcement: Boundaries text covers the full persisted-outside-chat scope from SKILL.md', async () => {
+  const configDir = makeConfigDir();
+  const flagPath = flagPathFor(configDir);
+  // Pre-seed an active flag so the hook's per-turn reinforcement fires for
+  // an otherwise-neutral prompt.
+  fs.writeFileSync(flagPath, 'full');
+
+  const result = await runHook(NON_CAVEMAN_PROMPT, configDir);
+  assert.equal(result.code, 0, `hook must still exit 0. stderr:\n${result.stderr}`);
+
+  const additionalContext = extractAdditionalContext(result.stdout);
+
+  const expectedTerms = [
+    'code',
+    'comments',
+    'commits',
+    'docs',
+    'issue/PR',
+    'memory files',
+    'third-party messages',
+  ];
+  for (const term of expectedTerms) {
+    assert.match(
+      additionalContext,
+      new RegExp(term.replace(/[/]/g, '\\/'), 'i'),
+      `expected per-turn reinforcement to mention "${term}" (full SKILL.md Boundaries scope), got:\n${additionalContext}`
+    );
+  }
+});
