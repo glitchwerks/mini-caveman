@@ -6,9 +6,8 @@
 // that has drifted out of sync with skills/caveman/SKILL.md, the single
 // source of truth, across two merged PRs:
 //
-//   - PR #10 (https://github.com/glitchwerks/mini-caveman/pull/10) added
-//     the wenyan-lite/wenyan-full/wenyan-ultra modes to the mode-switch
-//     roster, and broadened the Boundaries rule's persisted-outside-chat
+//   - PR #10 (https://github.com/glitchwerks/mini-caveman/pull/10) broadened
+//     the Boundaries rule's persisted-outside-chat
 //     scope to: code, comments, commits, docs, issue/PR text, memory files,
 //     third-party messages.
 //   - PR #12 (https://github.com/glitchwerks/mini-caveman/pull/12) reversed
@@ -97,19 +96,6 @@ function boundariesSectionOf(output) {
   assert.notEqual(idx, -1, `expected output to contain a "## Boundaries" section, got:\n${output}`);
   return output.slice(idx);
 }
-
-test('standalone-install fallback: mode-switch roster includes the wenyan modes added in PR #10', async () => {
-  const result = await runActivateHook();
-  assert.equal(result.code, 0, `hook must exit 0. stderr:\n${result.stderr}`);
-
-  for (const mode of ['wenyan-lite', 'wenyan-full', 'wenyan-ultra']) {
-    assert.match(
-      result.stdout,
-      new RegExp(mode, 'i'),
-      `expected fallback ruleset's mode-switch roster to include "${mode}" (added upstream in PR #10), got:\n${result.stdout}`
-    );
-  }
-});
 
 test('standalone-install fallback: ultra-level rule bans invented abbreviations, per the PR #12 reversal', async () => {
   const result = await runActivateHook();

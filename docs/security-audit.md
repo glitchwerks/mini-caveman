@@ -423,7 +423,7 @@ if (activeMode) {
    - No context injection if flag is invalid
 
 2. **activeMode is guaranteed to be one of:**
-   - `'off', 'lite', 'full', 'ultra', 'wenyan-lite', 'wenyan', 'wenyan-full', 'wenyan-ultra'`
+   - `'off', 'lite', 'full', 'ultra'`
    - These are safe strings; no code injection, command injection, or prompt-injection payload
 
 3. **JSON.stringify escapes the activeMode value** if it were to contain quotes, but the whitelist ensures it can't
