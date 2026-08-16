@@ -21,7 +21,6 @@ Modes:
   /caveman              full (default)
   /caveman lite         lighter
   /caveman ultra        extreme
-  /caveman wenyan       classical Chinese
 
 Skills:
   /caveman-compress     compress .md files to caveman prose
